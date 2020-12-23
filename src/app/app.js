@@ -10,17 +10,16 @@ export function startGame() {
     scene.clearColor = new BABYLON.Color3.White();
     scene.createDefaultEnvironment();
 
-    const camera = new BABYLON.FreeCamera("main_cam", new BABYLON.Vector3(0, 0, -10), scene);
+    const camera = new BABYLON.FreeCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
     camera.setTarget(BABYLON.Vector3.Zero());
 
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
-    BABYLON.SceneLoader.Append("/assets/", "LowPolyCITY.obj", scene, function (meshes) {
-        meshes[0].scaling = new BABYLON.Vector3(20, 20, 20);
-    });
+    BABYLON.SceneLoader.Append("/assets/maps/low poly city/", "Lowpoly_City_Free_Pack.obj", scene);
 
     const box = BABYLON.Mesh.CreateBox("Box", 4, scene);
-    box.position.z = 10;
+    box.position.z = 450;
+    box.position.y = 5;
 
     //start render loop
     engine.runRenderLoop(function () {
