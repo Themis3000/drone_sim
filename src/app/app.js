@@ -1,5 +1,7 @@
-const BABYLON = require("babylonjs");
-require("babylonjs-loaders");
+import {Physics} from "./utils/physics";
+import {getHidState} from "./utils/hidInput";
+import * as BABYLON from "babylonjs";
+import "babylonjs-loaders";
 
 export function startGame() {
     let canvas = document.getElementById("game_canvas");
@@ -8,7 +10,6 @@ export function startGame() {
     //scene creation
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3.White();
-    scene.createDefaultEnvironment();
 
     const playerCamera = new BABYLON.FreeCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
     playerCamera.setTarget(BABYLON.Vector3.Zero());
@@ -21,14 +22,13 @@ export function startGame() {
     box.position.z = 450;
     box.position.y = 5;
 
+    //let physics = new Physics(playerCamera, getHidState, 1);
+
     //start render loop
     engine.runRenderLoop(function () {
-        runPhysicsStep(engine.getDeltaTime(), playerCamera);
+        //physics.runPhysicsStep(engine.getDeltaTime());
+        //console.log(getHidState());
+        getHidState();
         scene.render();
     });
-
-}
-
-function runPhysicsStep(frameTimeDelta, camera) {
-
 }
