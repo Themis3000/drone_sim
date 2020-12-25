@@ -11,24 +11,26 @@ export function startGame() {
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3.White();
 
-    const playerCamera = new BABYLON.FreeCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
-    playerCamera.setTarget(BABYLON.Vector3.Zero());
+    const playerCamera = new BABYLON.FlyCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
+    playerCamera.noRotationConstraint = true;
 
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
     BABYLON.SceneLoader.Append("/assets/maps/low poly city/", "Lowpoly_City_Free_Pack.obj", scene);
 
-    const box = BABYLON.Mesh.CreateBox("Box", 4, scene);
-    box.position.z = 450;
-    box.position.y = 5;
+    const box1 = BABYLON.Mesh.CreateBox("Box", 4, scene);
+    box1.position.z = 500;
+    box1.position.y = 40;
 
-    //let physics = new Physics(playerCamera, getHidState, 1);
+    const box2 = BABYLON.Mesh.CreateBox("Box", 4, scene);
+    box2.position.z = 500;
+    box2.position.y = 0;
+
+    let physics = new Physics(playerCamera, getHidState, 1);
 
     //start render loop
     engine.runRenderLoop(function () {
-        //physics.runPhysicsStep(engine.getDeltaTime());
-        //console.log(getHidState());
-        getHidState();
+        physics.runPhysicsStep(engine.getDeltaTime());
         scene.render();
     });
 }
