@@ -16,15 +16,11 @@ export class Physics {
         //apply to the actual camera
         this.camera.rotation.x = this.pitch.value;
         this.camera.rotation.y = this.yaw.value;
-        //this.roll = math.PI flips rotation
-        if (this.pitch.value > (Math.PI / 2) && this.pitch.value < (1.5 * Math.PI)) {
-            console.log("flip");
-            this.camera.rotation.z = this.roll.value + Math.PI;
-        } else {
-            this.camera.rotation.z = this.roll.value;
-        }
+        this.camera.rotation.z = this.roll.value;
+
         console.log(this.camera.rotation);
     }
+
 }
 
 class Angle {

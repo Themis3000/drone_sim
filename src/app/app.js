@@ -11,7 +11,7 @@ export function startGame() {
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3.White();
 
-    const playerCamera = new BABYLON.FlyCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
+    const playerCamera = new BABYLON.UniversalCamera("main_cam", new BABYLON.Vector3(0, 10, 500), scene);
     playerCamera.noRotationConstraint = true;
 
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
