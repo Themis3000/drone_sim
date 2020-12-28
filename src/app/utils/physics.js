@@ -5,7 +5,7 @@ export class Physics {
         this.forcesScale = forcesScale;
         this.motorPower = 4;
         //max rotations per second in radians
-        this.rates = 2.7;
+        this.rates = 3;
         //added camera angle in degrees
         this.camAngle = 14;
         this.camAngleRad = this.camAngle * (Math.PI/180);
@@ -28,23 +28,23 @@ export class Physics {
         this.roll.value += (this.rates * hidState.roll)/1000 * frameTimeDelta;
         this.yaw.value += (this.rates * hidState.yaw)/1000 * frameTimeDelta;
         //find amount of force in each axis
-        let angleFromPlane = Math.atan(Math.sqrt(Math.tan(this.pitch.value)**2 + Math.tan(this.roll.value)**2));
-        let zForce = (((1/(Math.PI/4))*Math.abs(angleFromPlane-(Math.PI/2))-1)*systemForce);
-        let xyForce = systemForce - Math.abs(zForce);
-        let xForce = Math.abs(this.pitch.value)/(this.roll.value+this.pitch.value)*xyForce*Math.sign(this.pitch.value);
-        let yForce = (xyForce - Math.abs(xForce)) * Math.sign(this.pitch.value);
+        let angleFromPlane = Math.atan(Math.sqrt((Math.tan(this.pitch.value)**2) + (Math.tan(this.roll.value)**2)));
+        let yForce = (((1/(Math.PI/2))*Math.abs(angleFromPlane-Math.PI)-1)*systemForce);
+        let xzForce = systemForce - Math.abs(yForce);
+        let xForce = Math.abs(this.pitch.value)/(this.roll.value+this.pitch.value)*xzForce*Math.sign(this.pitch.value);
+        let zForce = (xzForce - Math.abs(xForce)) * Math.sign(this.pitch.value);
         //adjust forces for yaw
         //uc for unit circle
-        let ucAngle = Math.atan(xForce/yForce);
+        let ucAngle = Math.atan(xForce/zForce);
         let ucHypotenuse = xForce/Math.sin(ucAngle);
         let adjXForce = ucHypotenuse*Math.sin(ucAngle+this.yaw.value);
-        let adjYForce = ucHypotenuse*Math.cos(ucAngle+this.yaw.value);
+        let adjZForce = ucHypotenuse*Math.cos(ucAngle+this.yaw.value);
         //apply forces to camera
-        this.camera.position.y += (zForce-9.8)/1000 * frameTimeDelta;
+        this.camera.position.y += (yForce-9.8)/1000 * frameTimeDelta;
         if (adjXForce > 0)
-            this.camera.position.x += adjYForce/1000 * frameTimeDelta;
-        if (adjYForce > 0)
-            this.camera.position.z += adjXForce/1000 * frameTimeDelta;
+            this.camera.position.x += adjXForce/1000 * frameTimeDelta;
+        if (adjZForce > 0)
+            this.camera.position.z += adjZForce/1000 * frameTimeDelta;
         //apply rotations to camera
         this.camera.rotation.x = (this.pitch.value + this.camAngleRad);
         this.camera.rotation.y = this.yaw.value;
