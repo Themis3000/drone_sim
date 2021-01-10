@@ -1,3 +1,5 @@
+This is the physics rework branch. Although my own programmed in physics are still not totally operational, I've decided to completely start over. I wanted to first take a stab at this before doing any research at all about drone physics, which I've had little success with getting working correctly. However, I have had lots of success in the way of having fun. Now I think it's time to stop speculating on how drone physics work and actually learn it and implement it correctly though.
+
 # Web based drone sim
 #### Note: Still under development in a non-working state
 This will soon be a drone flight simulator that will run completely in your browser! I am using babylon.js as my 3d engine of choice, and I am also using webpack as my bundler of choice.
