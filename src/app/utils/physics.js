@@ -8,10 +8,13 @@ export class Physics {
         this.rates = 3;
         //added camera angle in degrees
         this.camAngle = 14;
-        this.camAngleRad = this.camAngle * (Math.PI/180);
         this.pitch = new Angle(0);
         this.roll = new Angle(0);
         this.yaw = new Angle(0);
+    }
+
+    set camAngle(angle) {
+        this.camAngleRad = angle * (Math.PI/180);
     }
 
     runPhysicsStep(frameTimeDelta) {
@@ -29,7 +32,7 @@ export class Physics {
         this.yaw.value += (this.rates * hidState.yaw)/1000 * frameTimeDelta;
         //find amount of force in each axis
         let angleFromPlane = Math.atan(Math.sqrt((Math.tan(this.pitch.value)**2) + (Math.tan(this.roll.value)**2)));
-        let yForce = (((1/(Math.PI/2))*Math.abs(angleFromPlane-Math.PI)-1)*systemForce);
+        let yForce = ((1/(Math.PI/2))*Math.abs(angleFromPlane-Math.PI)-1)*systemForce;
         let xzForce = systemForce - Math.abs(yForce);
         let xForce = Math.abs(this.pitch.value)/(this.roll.value+this.pitch.value)*xzForce*Math.sign(this.pitch.value);
         let zForce = (xzForce - Math.abs(xForce)) * Math.sign(this.pitch.value);
@@ -40,15 +43,20 @@ export class Physics {
         let adjXForce = ucHypotenuse*Math.sin(ucAngle+this.yaw.value);
         let adjZForce = ucHypotenuse*Math.cos(ucAngle+this.yaw.value);
         //apply forces to camera
-        this.camera.position.y += (yForce-9.8)/1000 * frameTimeDelta;
+        this.camera.position.y += Physics.calcMovement(yForce-9.8, frameTimeDelta);
         if (adjXForce > 0)
-            this.camera.position.x += adjXForce/1000 * frameTimeDelta;
+            this.camera.position.x += Physics.calcMovement(adjXForce, frameTimeDelta);
         if (adjZForce > 0)
-            this.camera.position.z += adjZForce/1000 * frameTimeDelta;
+            this.camera.position.z += Physics.calcMovement(adjZForce, frameTimeDelta);
         //apply rotations to camera
         this.camera.rotation.x = (this.pitch.value + this.camAngleRad);
         this.camera.rotation.y = this.yaw.value;
         this.camera.rotation.z = -this.roll.value;
+    }
+
+    //given an amount of force/second, this function returns the movement that force caused over an amount of time in ms
+    static calcMovement(force, time) {
+        return force/1000 * time;
     }
 }
 

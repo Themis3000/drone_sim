@@ -2,9 +2,12 @@
   "name": "drone_sim",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "dependencies": {
     "babylonjs": "^4.2.0",
-    "babylonjs-loaders": "^4.2.0"
+    "babylonjs-loaders": "^4.2.0",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
   },
   "description": "babylonjs drone sim",
   "devDependencies": {
@@ -21,7 +24,8 @@
   },
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "dev": "webpack serve --config webpack.dev.js --env development"
+    "dev": "webpack serve --config webpack.dev.js --env development",
+    "test": "mocha"
   },
   "author": "Themi Megas",
   "license": "ISC"
